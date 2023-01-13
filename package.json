@@ -5,11 +5,6 @@
   "dependencies": {
     "@ant-design/charts": "^1.1.4",
     "@ant-design/icons": "^4.0.2",
-    "@babel/cli": "^7.16.0",
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@babel/plugin-proposal-decorators": "^7.4.4",
-    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
-    "@babel/preset-env": "^7.16.5",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^13.1.9",
@@ -22,7 +17,9 @@
     "mobx-utils": "^5.5.5",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-router-dom": "^6.6.2",
     "react-scripts": "5.0.1",
+    "sass": "^1.57.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

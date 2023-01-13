@@ -1,12 +1,31 @@
-import { Button, Checkbox, Form, Input, Card } from "antd";
+import { Button, Form, Input, Card } from "antd";
 import React from "react";
+import { loginUser } from "../../service/Appservice";
+import { useNavigate } from "react-router-dom";
 function Login() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onFinish = async (values) => {
+    // const useLogin = {
+    //   usename: values.username,
+    //   password: values.password,
+    //   client_id: "vimc",
+    //   grant_type: "password",
+    //   scope: "openid",
+    // };
+    const client_id = "vimc";
+    const username = values.username;
+    const password = values.password;
+    const grant_type = "password";
+    const scope = "openid";
+    let res = await loginUser(client_id, username, password, grant_type, scope);
+    console.log("Success:", res);
+    // navigate("/home");
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="site-card-border-less-wrapper">
@@ -63,17 +82,6 @@ function Login() {
               ]}
             >
               <Input.Password />
-            </Form.Item>
-
-            <Form.Item
-              name="remember"
-              valuePropName="checked"
-              wrapperCol={{
-                offset: 8,
-                span: 16,
-              }}
-            >
-              <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
             <Form.Item
