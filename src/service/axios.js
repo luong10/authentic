@@ -2,6 +2,7 @@ import axios from "axios";
 
 const instance = axios.create({
   baseURL: "https://stg.sso.fafu.com.vn",
+  headers: { "content-type": "application/x-www-form-urlencoded" },
 });
 
 // Add a response interceptor
