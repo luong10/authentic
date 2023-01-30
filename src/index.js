@@ -1,17 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
-// import "./index.css";
+import "./index.css";
 import App from "./App";
-import "antd/dist/antd.min.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "antd/dist/antd.css";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter } from "react-router-dom";
+// import { AuthContexProvider } from "./context/userContext.js";
+import { Provider } from "mobx-react";
+import taskStore from "./store/TaskStore.js";
+import schedules from "./store/Schedules.js";
 
+// const root = ReactDOM.createRoot(document.getElementById("root"));
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <Provider store={taskStore} schedules={schedules}>
       <App />
-    </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
