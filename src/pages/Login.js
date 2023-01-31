@@ -12,7 +12,7 @@ const Login = () => {
 
   const onFinish = async (values) => {
     const t = await login2(values);
-    console.log("Failed:", t);
+    // console.log("Failed:", t);
 
     if (t) navigate("/");
     else setError(true);

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Breadcrumb,
   DatePicker,
@@ -17,21 +17,36 @@ import {
 import "antd/dist/antd.css";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { useSchedules } from "../store/useStore.js";
+import { observer } from "mobx-react";
 
-export const TaoMoiLich = () => {
+const TaoMoiLich = () => {
   const [form] = Form.useForm();
   const { SHOW_PARENT } = TreeSelect;
-  const tProps = {
-    // treeData,
-    // value,
-    // onChange,
-    treeCheckable: true,
-    showCheckedStrategy: SHOW_PARENT,
-    placeholder: "Please select",
-    style: {
-      width: "100%",
-    },
+  const { department, getDepartmentsUsers } = useSchedules();
+  const treeData = [];
+  const [value, setValue] = useState();
+
+  const handleDepart = (newValue) => {
+    setValue(newValue);
   };
+  department.map((post) => {
+    const treeDataUser = [];
+    post.users.map((postUser) => {
+      treeDataUser.push({
+        title: postUser.name_uppercase,
+        value: postUser.user_code,
+        key: postUser.user_code,
+      });
+    });
+    treeData.push({
+      title: post.name,
+      value: post.code,
+      key: post.code,
+      children: treeDataUser,
+    });
+  });
+
   return (
     <div className="home-head3">
       <div className="out-let">
@@ -69,7 +84,7 @@ export const TaoMoiLich = () => {
 
           <Form.Item
             label="Thời gian bắt đầu"
-            name="start_at"
+            name="start_at1"
             rules={[
               {
                 required: true,
@@ -93,7 +108,7 @@ export const TaoMoiLich = () => {
         </div>
         <Form.Item
           label="Chủ trì"
-          name="start_at"
+          name="start_at2"
           rules={[
             {
               required: true,
@@ -105,7 +120,7 @@ export const TaoMoiLich = () => {
         </Form.Item>
         <Form.Item
           label="Địa điểm"
-          name="start_at"
+          name="start_at3"
           rules={[
             {
               required: true,
@@ -115,7 +130,7 @@ export const TaoMoiLich = () => {
         >
           <Input placeholder="Địa điểm" />
         </Form.Item>
-        <Form.Item label="Chuẩn bị" name="start_at">
+        <Form.Item label="Chuẩn bị" name="start_at4">
           <Input placeholder="Chuẩn bị" />
         </Form.Item>
         <Form.Item label="Nội dung sự kiện">
@@ -132,11 +147,21 @@ export const TaoMoiLich = () => {
             <Button icon={<UploadOutlined />}>Chọn tài liệu đính kèm</Button>
           </Upload>
         </Form.Item>
-        <Form.Item label="Thành viên tham gia" name="start_at">
+        <Form.Item label="Thành viên tham gia" name="start_at5">
           <Input placeholder="--Thành viên tham gia--" />
         </Form.Item>
-        <Form.Item label="Thông báo" name="start_at">
-          <TreeSelect {...tProps} />
+        <Form.Item label="Thông báo" name="start_at6">
+          <TreeSelect
+            treeData={treeData}
+            value={value}
+            onChange={handleDepart}
+            treeCheckable={true}
+            showCheckedStrategy={SHOW_PARENT}
+            placeholder="Please select"
+            style={{
+              width: "100%",
+            }}
+          />
         </Form.Item>
         <Form.Item>
           <Button
@@ -152,3 +177,4 @@ export const TaoMoiLich = () => {
     </div>
   );
 };
+export default observer(TaoMoiLich);

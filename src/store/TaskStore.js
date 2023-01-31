@@ -21,9 +21,11 @@ class TaskStore {
       logout: action.bound,
     });
     this.currentUser = JSON.parse(localStorage.getItem("user"));
+    this.token = JSON.parse(localStorage.getItem("token"));
+
     autorun(() => {
       localStorage.setItem("user", JSON.stringify(this.currentUser));
-      // localStorage.setItem("token", JSON.stringify(this.token));
+      localStorage.setItem("token", JSON.stringify(this.token));
       console.log("run each state change", this.currentUser);
     });
   }
@@ -42,14 +44,14 @@ class TaskStore {
       }),
     };
     var responseLogin = await axios.request(options);
-    var token = responseLogin.data.access_token;
+    this.token = responseLogin.data.access_token;
 
     //get profile
     const responseGetProfile = await axios({
       method: "GET",
       url: `https://stg.vimc.fafu.com.vn/api/v1/users/current-user/`,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.token}`,
       },
     });
     this.currentUser = responseGetProfile.data.name_uppercase;
@@ -98,6 +100,7 @@ class TaskStore {
 
   logout = async () => {
     this.currentUser = "";
+    this.token = "";
   };
 }
 

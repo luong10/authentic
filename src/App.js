@@ -7,7 +7,8 @@ import { observer } from "mobx-react";
 import Nav from "./component/Nav";
 import MenuNav from "./component/MenuNav";
 import LichCoQuan from "./pages/LichCoQuan";
-import { TaoMoiLich } from "./pages/TaoMoiLich";
+import TaoMoiLich from "./pages/TaoMoiLich";
+import ChiTietLich from "./pages/ChiTietLich";
 
 import {
   Route,
@@ -52,10 +53,14 @@ function App() {
           path: "/tao-moi",
           element: <TaoMoiLich />,
         },
+        {
+          path: "/chi-tiet/:code",
+          element: <ChiTietLich />,
+        },
       ],
     },
     {
-      path: "/login",
+      path: "/",
       element: <Login />,
     },
   ]);

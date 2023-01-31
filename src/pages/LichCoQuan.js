@@ -154,7 +154,20 @@ function LichCoQuan() {
           </Space>
         </div>
       </div>
-      <Table dataSource={data} bordered pagination={false} columns={columns} />
+      <Table
+        dataSource={data}
+        bordered
+        pagination={false}
+        columns={columns}
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: (event) => {
+              // console.log("check record:", record);
+              navigate(`/chi-tiet/${record.key}`);
+            },
+          };
+        }}
+      />
     </div>
   );
 }

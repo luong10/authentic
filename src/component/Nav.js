@@ -3,6 +3,7 @@ import { Button, Menu, Space } from "antd";
 import { useNavigate, Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import useStore from "../store/useStore.js";
+import { observer } from "mobx-react";
 
 function Nav() {
   const { currentUser, logout } = useStore();
@@ -10,7 +11,7 @@ function Nav() {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/");
   };
   return (
     <>
@@ -41,4 +42,4 @@ function Nav() {
   );
 }
 
-export default Nav;
+export default observer(Nav);
