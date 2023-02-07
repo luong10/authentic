@@ -8,11 +8,12 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "mobx-react";
 import taskStore from "./store/TaskStore.js";
 import schedules from "./store/Schedules.js";
+import notices from "./store/Notice";
 
 // const root = ReactDOM.createRoot(document.getElementById("root"));
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={taskStore} schedules={schedules}>
+    <Provider store={taskStore} schedules={schedules} notices={notices}>
       <App />
     </Provider>
   </React.StrictMode>,

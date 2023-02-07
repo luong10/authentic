@@ -12,10 +12,20 @@ function Nav() {
   const handleLogout = () => {
     logout();
     navigate("/");
+    localStorage.setItem("navKey", JSON.stringify("home"));
   };
   return (
     <>
-      <div className="home-head">
+      <div
+        className="home-head"
+        style={{
+          // borderBottom: "5px solid #F6F6F7",
+          // position: "fixed",
+          marginBottom: 15,
+          // backgroundColor: "green",
+          boxShadow: "-1px 2px 2px rgba(0,0,0,0.3)",
+        }}
+      >
         <h1
           style={{
             color: "grey",

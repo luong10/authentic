@@ -7,9 +7,10 @@ import { HomeOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { useSchedules } from "../store/useStore.js";
 import { observer } from "mobx-react";
 import { getHours, getMinutes, format, startOfWeek, endOfWeek } from "date-fns";
+import moment from "moment";
 
 function LichCoQuan() {
-  const { schedules, getSchedules } = useSchedules();
+  const { schedules, getSchedules, resetDetail } = useSchedules();
   const navigate = useNavigate();
 
   let sameKey;
@@ -129,9 +130,21 @@ function LichCoQuan() {
   // console.log("check data", data);
 
   const handleAdd = () => {
+    resetDetail();
     navigate("/tao-moi");
   };
+  const customWeekStartEndFormat = (value) =>
+    `${moment(value).startOf("week").format("DD/MM")} ~ ${moment(value)
+      .endOf("week")
+      .format("DD/MM")}`;
 
+  useEffect(() => {
+    const s = startOfWeek(new Date(), { weekStartsOn: 1 });
+    const e = endOfWeek(new Date(), { weekStartsOn: 1 });
+    const start = format(new Date(s), "yyyy-MM-dd");
+    const end = format(new Date(e), "yyyy-MM-dd");
+    getSchedules(start, end);
+  }, []);
   return (
     <div className="home-head3">
       <div className="out-let">
@@ -143,7 +156,12 @@ function LichCoQuan() {
         </Breadcrumb>
         <div>
           <Space size={12}>
-            <DatePicker onChange={onChange} picker="week" />
+            <DatePicker
+              onChange={onChange}
+              picker="week"
+              defaultValue={moment()}
+              format={customWeekStartEndFormat}
+            />
             <Button
               onClick={handleAdd}
               type="primary"
@@ -159,6 +177,8 @@ function LichCoQuan() {
         bordered
         pagination={false}
         columns={columns}
+        size="small"
+        style={{ marginTop: 15 }}
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {

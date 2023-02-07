@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Breadcrumb, Table } from "antd";
+import { Breadcrumb, Table, Button, Space, Popconfirm } from "antd";
 import { HomeOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react";
@@ -15,7 +15,9 @@ import {
 
 const ChiTietLich = () => {
   const code = useLocation().pathname.slice(10);
-  const { schedulesDetail, getSchedulesDetail } = useSchedules();
+  const navigate = useNavigate();
+
+  const { schedulesDetail, getSchedulesDetail, delSchedule } = useSchedules();
 
   const getTime = (time) => {
     let t = getHours(new Date(time)) + "h" + getMinutes(new Date(time));
@@ -40,7 +42,9 @@ const ChiTietLich = () => {
   const dataSource = [
     {
       name: "Ngày thực hiện",
-      value: format(parseISO(schedulesDetail.start_at), "dd-MM-yyyy"),
+      value: schedulesDetail.start_at
+        ? format(new Date(schedulesDetail.start_at.toString()), "dd-MM-yyyy")
+        : "",
     },
     {
       name: "Thời gian bắt đầu",
@@ -70,7 +74,16 @@ const ChiTietLich = () => {
     },
     {
       name: "Tài liệu đính kèm",
-      value: "Không có tài liệu đính kèm",
+      value: schedulesDetail.file_ids
+        ? schedulesDetail.file_ids.map((p) => {
+            return (
+              <>
+                <a>{p.file_title}</a>
+                <br />
+              </>
+            );
+          })
+        : "Không có tài liệu đính kèm",
     },
     {
       name: "Thành viên tham gia",
@@ -82,11 +95,31 @@ const ChiTietLich = () => {
     },
     {
       name: "Ngày tạo",
-      value: schedulesDetail.event_notice,
+      value: schedulesDetail.assignees
+        ? schedulesDetail.assignees.map((post) => {
+            return post.name_uppercase;
+          }) +
+          " - " +
+          format(
+            new Date(schedulesDetail.created_at.toString()),
+            "dd-MM-yyyy"
+          ) +
+          " " +
+          getTime(schedulesDetail.created_at)
+        : "",
     },
     {
       name: "Chỉnh sửa lần cuối",
-      value: schedulesDetail.event_notice,
+      value: schedulesDetail.last_edit_by
+        ? schedulesDetail.last_edit_by.name_uppercase +
+          " - " +
+          format(
+            new Date(schedulesDetail.updated_at.toString()),
+            "dd-MM-yyyy"
+          ) +
+          " " +
+          getTime(schedulesDetail.updated_at)
+        : "Chưa có thông tin",
     },
   ];
   useEffect(() => {
@@ -94,6 +127,17 @@ const ChiTietLich = () => {
   }, []);
 
   console.log("check log:", schedulesDetail);
+
+  const confirm = (e) => {
+    const t = delSchedule(code);
+    if (t) navigate("/lich-co-quan");
+  };
+  const cancel = (e) => {};
+
+  const handleEdit = () => {
+    navigate(`/chinh-sua/${code}`);
+  };
+
   return (
     <div className="home-head3">
       <div className="out-let">
@@ -109,9 +153,34 @@ const ChiTietLich = () => {
         style={{ marginTop: 20 }}
         dataSource={dataSource}
         pagination={false}
-        // size="small"
         columns={columns}
       />
+      <div
+        className="home-head"
+        style={{ marginTop: 20, marginBottom: 20, justifyContent: "right" }}
+      >
+        <Popconfirm
+          title="Bạn có muốn xóa không?"
+          onConfirm={confirm}
+          onCancel={cancel}
+          okText="Đồng ý"
+          cancelText="Không"
+        >
+          <Button
+            style={{
+              backgroundColor: "#FFF2E8",
+              marginRight: 20,
+              border: "2px solid #FFBB96",
+              color: "#D4380D",
+            }}
+          >
+            Xóa
+          </Button>
+        </Popconfirm>
+        <Button type="primary" htmlType="button" onClick={handleEdit}>
+          Chỉnh sửa
+        </Button>
+      </div>
     </div>
   );
 };

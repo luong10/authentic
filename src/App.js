@@ -9,6 +9,9 @@ import MenuNav from "./component/MenuNav";
 import LichCoQuan from "./pages/LichCoQuan";
 import TaoMoiLich from "./pages/TaoMoiLich";
 import ChiTietLich from "./pages/ChiTietLich";
+import ThongBaoChung from "./pages/ThongBao/ThongBaoChung";
+import ChiTietThongBao from "./pages/ThongBao/ChiTietThongBao";
+import DangThongBao from "./pages/ThongBao/DangThongBao";
 
 import {
   Route,
@@ -21,6 +24,7 @@ import {
 // import { AuthContext } from "./context/userContext.js";
 function App() {
   const { currentUser } = useStore();
+
   console.log("check app", currentUser);
   // return <RouterProvider router={router} />;
   const Layout = () => {
@@ -29,7 +33,10 @@ function App() {
         <div className="home-ttotal">
           <Nav />
           <div className="home-head">
-            <MenuNav />
+            <div className="notice2">
+              <MenuNav />
+              <div></div>
+            </div>
             <Outlet />
           </div>
         </div>
@@ -56,6 +63,26 @@ function App() {
         {
           path: "/chi-tiet/:code",
           element: <ChiTietLich />,
+        },
+        {
+          path: "/chinh-sua/:code",
+          element: <TaoMoiLich />,
+        },
+        {
+          path: "/thong-bao-chung",
+          element: <ThongBaoChung />,
+        },
+        {
+          path: "/chi-tiet-thong-bao/:id",
+          element: <ChiTietThongBao />,
+        },
+        {
+          path: "/dang-thong-bao",
+          element: <DangThongBao />,
+        },
+        {
+          path: "/sua-thong-bao/:id",
+          element: <DangThongBao />,
         },
       ],
     },
